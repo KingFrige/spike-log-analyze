@@ -46,12 +46,12 @@ for i in ax.patches:
     fontsize=10, fontweight='bold', 
     color='grey') 
 
-ax.set_title('instruction histgram', 
+ax.set_title('pc histgram', 
   loc='left', ) 
 
 fig.text(0.9, 0.15, 'test', fontsize=12, 
   color='grey', ha='right', va='bottom', 
   alpha=0.7) 
 
-plt.savefig('output/insn-histgram.png', dpi=300)
+plt.savefig('output/pc-histgram.png', dpi=300)
 

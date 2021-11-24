@@ -22,10 +22,10 @@ $ pip3 install -r requirements.txt --user
 ## run
 
 ```
-$ python3 plot-histgram.py
+$ python3 plot-pc-histgram.py
 
 # show
-$ gio open output/insn-histgram.png
+$ gio open output/pc-histgram.png
 ```
 
 ## reference
