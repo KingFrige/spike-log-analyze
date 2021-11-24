@@ -4,21 +4,23 @@ import pandas as pd
 from matplotlib import pyplot as plt 
 
 # Read CSV into pandas 
-data = pd.read_csv(r"demo/test.csv") 
+data = pd.read_csv(r"demo/test.csv", dtype={'pc': str, 'times': int}) 
+# print(data.dtypes)
+
 data.head() 
 df = pd.DataFrame(data) 
-data_dict = df.to_dict('split')
-print("data_dict = ", data_dict['columns'])
-# print(sorted(data_dict.items(), key = lambda kv:(kv[1], kv[0]), reverse=True))
+data_dict = dict(df.to_dict('split')['data'])
+data_sorted = sorted(data_dict.items(), key = lambda kv: kv[1], reverse=True)
+# print(data_sorted)
 
-pc_addr = df['pc'].head(20)
-ex_times = df['times'].head(20)
+pc_addrs = [x[0] for x in data_sorted[:40]]
+ex_times = [x[1] for x in data_sorted[:40]] 
 
 # Figure Size 
 fig, ax = plt.subplots(figsize=(16, 9)) 
 
 # Horizontal Bar Plot 
-ax.barh(pc_addr, ex_times) 
+ax.barh(pc_addrs, ex_times) 
 
 # Remove axes splines 
 for s in ['top', 'bottom', 'left', 'right']:
@@ -44,11 +46,11 @@ for i in ax.patches:
     fontsize=10, fontweight='bold', 
     color='grey') 
 
-ax.set_title('tttttt', 
+ax.set_title('instruction histgram', 
   loc='left', ) 
 
 fig.text(0.9, 0.15, 'test', fontsize=12, 
   color='grey', ha='right', va='bottom', 
   alpha=0.7) 
 
-plt.show()
+plt.savefig('insn-histgram.png', dpi=300)
