@@ -53,4 +53,5 @@ fig.text(0.9, 0.15, 'test', fontsize=12,
   color='grey', ha='right', va='bottom', 
   alpha=0.7) 
 
-plt.savefig('insn-histgram.png', dpi=300)
+plt.savefig('output/insn-histgram.png', dpi=300)
+
