@@ -2,9 +2,18 @@
 
 import pandas as pd 
 from matplotlib import pyplot as plt 
+import argparse
+import os
+
+parser = argparse.ArgumentParser(description='manual to this script')
+parser.add_argument("--path", type=str, default="0")
+args = parser.parse_args()
+
+path_base = os.path.basename(args.path) 
+file_name = path_base.split('.')[0]
 
 # Read CSV into pandas 
-data = pd.read_csv(r"demo/test.csv", dtype={'pc': str, 'times': int}) 
+data = pd.read_csv(args.path, dtype={'pc': str, 'times': int}) 
 # print(data.dtypes)
 
 data.head() 
@@ -53,6 +62,6 @@ fig.text(0.9, 0.15, 'test', fontsize=12,
   color='grey', ha='right', va='bottom', 
   alpha=0.7) 
 
-plt.savefig('output/pc-histgram.png', dpi=300)
+plt.savefig('output/'+file_name+'-pc-histogram.png', dpi=300)
 plt.show()
 

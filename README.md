@@ -42,12 +42,12 @@ pc histgram
 ---------------
 
 ```
-$ python3 plot-pc-histgram.py
+$ python3 plot-pc-histgram.py --path demo/test.csv
 
 # show
-$ gio open output/pc-histgram.png
+$ gio open output/test-pc-histgram.png
 # or 
-$ display output/pc-histgram.png
+$ display output/test-pc-histgram.png
 ```
 
 pc histgram
