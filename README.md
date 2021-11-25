@@ -26,6 +26,8 @@ $ python3 plot-pc-histgram.py
 
 # show
 $ gio open output/pc-histgram.png
+# or 
+$ display output/pc-histgram.png
 ```
 
 ## reference

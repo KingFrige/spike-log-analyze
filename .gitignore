@@ -1,1 +1,2 @@
-output/pc-histgram.png
+output/*
+*.log
