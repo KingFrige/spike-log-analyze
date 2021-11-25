@@ -38,6 +38,9 @@ $ spike -l --log=serial-simtiny-workload.log pk your-elf
 
 ## run
 
+pc histgram
+---------------
+
 ```
 $ python3 plot-pc-histgram.py
 
@@ -45,6 +48,13 @@ $ python3 plot-pc-histgram.py
 $ gio open output/pc-histgram.png
 # or 
 $ display output/pc-histgram.png
+```
+
+pc histgram
+---------------
+
+```
+$ ./plot-insn-histgram.py --path demo/serial-simtiny-workload.log
 ```
 
 ## reference

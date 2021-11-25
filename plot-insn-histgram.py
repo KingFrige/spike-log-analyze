@@ -2,8 +2,17 @@
 
 import pandas as pd 
 from matplotlib import pyplot as plt 
+import argparse
+import os
 
-spike_log = open("demo/serial-simtiny-workload.log", "r")
+parser = argparse.ArgumentParser(description='manual to this script')
+parser.add_argument("--path", type=str, default="0")
+args = parser.parse_args()
+
+path_base = os.path.basename(args.path) 
+file_name = path_base.split('.')[0]
+
+spike_log = open(args.path, "r")
 
 insn_dct = {}
 for line in spike_log:
@@ -55,4 +64,4 @@ fig.text(0.9, 0.15, 'test', fontsize=12,
   alpha=0.7) 
 
 plt.title('insn histogram')
-plt.savefig('output/insn-histogram.png', dpi=300)
+plt.savefig('output/'+file_name+'-insn-histogram.png', dpi=300)
