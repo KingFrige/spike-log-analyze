@@ -3,9 +3,6 @@
 import pandas as pd 
 from matplotlib import pyplot as plt 
 
-width,height=20,30
-plt.rcParams['figure.figsize'] = width, height
-
 spike_log = open("demo/serial-simtiny-workload.log", "r")
 
 insn_dct = {}
@@ -21,7 +18,7 @@ x1 = [x[0] for x in insn_sorted]
 y1 = [x[1] for x in insn_sorted] 
 
 # Figure Size 
-fig, ax = plt.subplots(figsize=(16, 32)) 
+fig, ax = plt.subplots(figsize=(10, 24))
 
 # Horizontal Bar Plot 
 ax.barh(x1, y1) 
