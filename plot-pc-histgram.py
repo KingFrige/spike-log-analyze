@@ -54,4 +54,5 @@ fig.text(0.9, 0.15, 'test', fontsize=12,
   alpha=0.7) 
 
 plt.savefig('output/pc-histgram.png', dpi=300)
+plt.show()
 
