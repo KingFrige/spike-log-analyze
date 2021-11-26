@@ -38,7 +38,7 @@ def indexed_effictive_load(lines):
     find_flag = 1
     print(lines[1])
     print(lines[0])
-    print('---------------------')
+    print('------- indexed effictive load --------------')
   return find_flag
 
 def threeInsn_indexed_effictive_load(lines):
@@ -53,7 +53,7 @@ def threeInsn_indexed_effictive_load(lines):
     find_flag = 1
     print(lines[1])
     print(lines[0])
-    print('---------------------')
+    print('------- threeInsn indexed effictive load --------------')
   return find_flag
 
 def clear_upper_word(lines):
@@ -66,7 +66,7 @@ def clear_upper_word(lines):
     find_flag = 1
     print(lines[1])
     print(lines[0])
-    print('---------------------')
+    print('------- clear upper word --------------')
   return find_flag
 
 def load_upper_imm_addi(lines):
@@ -79,7 +79,7 @@ def load_upper_imm_addi(lines):
     find_flag = 1
     print(lines[1])
     print(lines[0])
-    print('---------------------')
+    print('------- load upper imm addi --------------')
   return find_flag
 
 def load_upper_imm_ld(lines):
@@ -92,7 +92,7 @@ def load_upper_imm_ld(lines):
     find_flag = 1
     print(lines[1])
     print(lines[0])
-    print('---------------------')
+    print('------- load upper imm ld --------------')
   return find_flag
 
 def load_global_imm(lines):
@@ -105,7 +105,7 @@ def load_global_imm(lines):
     find_flag = 1
     print(lines[1])
     print(lines[0])
-    print('---------------------')
+    print('------- load global imm --------------')
   return find_flag
 
 def calc_target_addr(lines):
@@ -130,7 +130,7 @@ def load_pair(lines):
     find_flag = 1
     print(lines[1])
     print(lines[0])
-    print('---------------------')
+    print('------- load pair --------------')
   return find_flag
 
 def post_indexed_load(lines):
