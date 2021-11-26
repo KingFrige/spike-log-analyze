@@ -57,6 +57,11 @@ pc histgram
 $ ./plot-insn-histgram.py --path demo/serial-simtiny-workload.log
 ```
 
+macro op fusion
+------------------
+
+./macro-op-fusion-find.py --path demo/serial-simtiny-workload.log
+
 ## reference
 
 [Spike RISC-V ISA Simulator](https://github.com/riscv-software-src/riscv-isa-sim)
