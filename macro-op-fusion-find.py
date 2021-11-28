@@ -15,105 +15,91 @@ file_name = path_base.split('.')[0]
 
 spike_log = open(args.path, "r")
 
+def print_lines_list(line_num, lines, annot_str, three_line = False):
+  if(three_line):
+    print(line_num-2, ' '.join(lines[2]))
+  print(line_num-1,   ' '.join(lines[1]))
+  print(line_num,     ' '.join(lines[0]))
+  print('------- %s --------------', annot_str)
+  print()
+
 def indexed_load(lines, line_num):
   find_flag = 0
-  line1_list = re.sub(r',','',lines[1]).split();
-  line0_list = re.sub(r',','',lines[0]).split();
+  line1_list = lines[1]
+  line0_list = lines[0]
   rd_match = (line1_list[5] == line0_list[5]) and (line0_list[5] in line0_list[6:-1])
   insn_match = line1_list[4] == 'add' and line0_list[4] == 'ld'
   if(rd_match and insn_match):
     find_flag = 1
-    print(line_num-1, lines[1], end='')
-    print(line_num, lines[0], end='')
-    print('------- indexed load --------------')
-    print()
+    print_lines_list(line_num, lines, "indexed load")
   return find_flag
 
 def indexed_effictive_load(lines, line_num):
   find_flag = 0
-  line1_list = re.sub(r',','',lines[1]).split();
-  line0_list = re.sub(r',','',lines[0]).split();
+  line1_list = lines[1]
+  line0_list = lines[0]
   rd_match = (line1_list[5] == line0_list[5]) and (line0_list[5] in line0_list[6:-1])
   insn_match = line1_list[4] == 'slli' and line0_list[4] == 'add'
   if(rd_match and insn_match):
     find_flag = 1
-    print(line_num-1, lines[1], end='')
-    print(line_num, lines[0], end='')
-    print('------- indexed effictive load --------------')
-    print()
+    print_lines_list(line_num, lines, "indexed effictive load")
   return find_flag
 
 def threeInsn_indexed_effictive_load(lines, line_num):
   find_flag = 0
-  line2_list = re.sub(r',','',lines[2]).split();
-  line1_list = re.sub(r',','',lines[1]).split();
-  line0_list = re.sub(r',','',lines[0]).split();
+  line2_list = lines[2]
+  line1_list = lines[1]
+  line0_list = lines[0]
   rd0_match = (line2_list[5] == line1_list[5]) and (line1_list[5] in line1_list[6:-1])
   rd1_match = (line1_list[5] == line0_list[5]) and (line0_list[5] in line0_list[6:-1])
   insn_match = line2_list[4] == 'slli' and line1_list[4] == 'add' and line0_list[4] == 'ld'
   if(rd0_match and rd1_match and insn_match):
     find_flag = 1
-    print(line_num-2, lines[2], end='')
-    print(line_num-1, lines[1], end='')
-    print(line_num, lines[0], end='')
-    print('------- threeInsn indexed effictive load --------------', end='\n')
-    print()
+    print_lines_list(line_num, lines, "threeInsn indexed effictive load", True)
   return find_flag
 
 def clear_upper_word(lines, line_num):
   find_flag = 0
-  line1_list = re.sub(r',','',lines[1]).split();
-  line0_list = re.sub(r',','',lines[0]).split();
+  line1_list = lines[1]
+  line0_list = lines[0]
   rd_match = (line1_list[5] == line0_list[5]) and (line0_list[5] in line0_list[6:-1])
   insn_match = line1_list[4] == 'slli' and line0_list[4] == 'srli'
   if(rd_match and insn_match):
     find_flag = 1
-    print(line_num-1, lines[1], end='')
-    print(line_num, lines[0], end='')
-    print('------- clear upper word --------------')
-    print()
+    print_lines_list(line_num, lines, "clear upper word")
   return find_flag
 
 def load_upper_imm_addi(lines, line_num):
   find_flag = 0
-  line1_list = re.sub(r',','',lines[1]).split();
-  line0_list = re.sub(r',','',lines[0]).split();
+  line1_list = lines[1]
+  line0_list = lines[0]
   rd_match = (line1_list[5] == line0_list[5]) and (line0_list[5] in line0_list[6:-1])
   insn_match = line1_list[4] == 'lui' and line0_list[4] == 'addi'
   if(rd_match and insn_match):
     find_flag = 1
-    print(line_num-1, lines[1], end='')
-    print(line_num, lines[0], end='')
-    print('------- load upper imm addi --------------')
-    print()
+    print_lines_list(line_num, lines, "load upper imm addi")
   return find_flag
 
 def load_upper_imm_ld(lines, line_num):
   find_flag = 0
-  line1_list = re.sub(r',','',lines[1]).split();
-  line0_list = re.sub(r',','',lines[0]).split();
+  line1_list = lines[1]
+  line0_list = lines[0]
   rd_match = (line1_list[5] == line0_list[5]) and (line0_list[5] in line0_list[6:-1])
   insn_match = line1_list[4] == 'lui' and line0_list[4] == 'ld'
   if(rd_match and insn_match):
     find_flag = 1
-    print(line_num-1, lines[1], end='')
-    print(line_num, lines[0], end='')
-    print('------- load upper imm ld --------------')
-    print()
+    print_lines_list(line_num, lines, "load upper imm ld")
   return find_flag
 
 def load_global_imm(lines, line_num):
   find_flag = 0
-  line1_list = re.sub(r',','',lines[1]).split();
-  line0_list = re.sub(r',','',lines[0]).split();
+  line1_list = lines[1]
+  line0_list = lines[0]
   rd_match = (line1_list[5] == line0_list[5]) and (line0_list[5] in line0_list[6:-1])
   insn_match = line1_list[4] == 'auipc' and line0_list[4] == 'ld'
   if(rd_match and insn_match):
     find_flag = 1
-    print(line_num-1, lines[1], end='')
-    print(line_num, lines[0], end='')
-    print('------- load global imm --------------')
-    print()
+    print_lines_list(line_num, lines, "load global imm")
   return find_flag
 
 def calc_target_addr(lines, line_num):
@@ -130,8 +116,8 @@ def wide_div(lines, line_num):
 
 def load_pair(lines, line_num):
   find_flag = 0
-  line1_list = re.sub(r',','',lines[1]).split();
-  line0_list = re.sub(r',','',lines[0]).split();
+  line1_list = lines[1]
+  line0_list = lines[0]
   if(len(line0_list) > 6 and len(line1_list) > 6):
     pattern = r'[(](.*?)[)]'
     line1_rs = re.findall(pattern, line1_list[6])
@@ -140,51 +126,56 @@ def load_pair(lines, line_num):
     insn_match = line1_list[4] == 'ld' and line0_list[4] == 'ld'
     if(rs_match and insn_match):
       find_flag = 1
-      print(line_num-1, lines[1], end='')
-      print(line_num, lines[0], end='')
-      print('------- load pair --------------')
-      print()
+      print_lines_list(line_num, lines, "load pair")
   return find_flag
 
 def post_indexed_load(lines, line_num):
   pass
 
-find_cnt = 0
-list_lines = ["", "", ""]
-list_index = 0
-macro_opFusion_num = 0
-line_num = 0
 
-indexed_load_cnt = 0
-indexed_effictive_load_cnt = 0
-clear_upper_word_cnt = 0
-load_upper_imm_addi_cnt = 0
-load_upper_imm_ld_cnt = 0
-load_global_imm_cnt = 0
-threeInsn_indexed_effictive_load_cnt = 0
-load_pair_cnt = 0
 
-for line in spike_log:
-  line_list = re.sub(r',','',line).split();
-  line_num  = line_num + 1
-  if(len(line_list) > 5):
-    list_lines[2] = list_lines[1]
-    list_lines[1] = list_lines[0]
-    list_lines[0] = line
-  if(line_num > 1):
-    indexed_load_cnt += indexed_load(list_lines, line_num)
-    indexed_effictive_load_cnt += indexed_effictive_load(list_lines, line_num)
-    clear_upper_word_cnt += clear_upper_word(list_lines, line_num)
-    load_upper_imm_addi_cnt += load_upper_imm_addi(list_lines, line_num)
-    load_upper_imm_ld_cnt += load_upper_imm_ld(list_lines, line_num)
-    load_global_imm_cnt += load_global_imm(list_lines, line_num)
-    load_pair_cnt += load_pair(list_lines, line_num)
+def main():
+  find_cnt = 0
+  lines_list = ["", "", ""]
+  list_index = 0
+  macro_opFusion_num = 0
+  line_num = 0
+  
+  indexed_load_cnt = 0
+  indexed_effictive_load_cnt = 0
+  clear_upper_word_cnt = 0
+  load_upper_imm_addi_cnt = 0
+  load_upper_imm_ld_cnt = 0
+  load_global_imm_cnt = 0
+  threeInsn_indexed_effictive_load_cnt = 0
+  load_pair_cnt = 0
+  
+  for line in spike_log:
+    line_list = re.sub(r',','',line).split();
+    line_num  = line_num + 1
+    if(len(line_list) > 5):
+      lines_list[2] = lines_list[1]
+      lines_list[1] = lines_list[0]
+      lines_list[0] = line_list
+    if(line_num > 1):
+      indexed_load_cnt += indexed_load(lines_list, line_num)
+      indexed_effictive_load_cnt += indexed_effictive_load(lines_list, line_num)
+      clear_upper_word_cnt += clear_upper_word(lines_list, line_num)
+      load_upper_imm_addi_cnt += load_upper_imm_addi(lines_list, line_num)
+      load_upper_imm_ld_cnt += load_upper_imm_ld(lines_list, line_num)
+      load_global_imm_cnt += load_global_imm(lines_list, line_num)
+      load_pair_cnt += load_pair(lines_list, line_num)
+  
+    if(line_num > 2):
+      threeInsn_indexed_effictive_load_cnt += threeInsn_indexed_effictive_load(lines_list, line_num)
+  
+  macro_opFusion_num = indexed_load_cnt + indexed_effictive_load_cnt + clear_upper_word_cnt + load_upper_imm_addi_cnt + load_upper_imm_ld_cnt + load_global_imm_cnt + threeInsn_indexed_effictive_load_cnt + load_pair_cnt
+  
+  op_fusion_ratio = macro_opFusion_num / line_num
+  print("Potential macro opFusion ", macro_opFusion_num)  
+  print("macro opFusion ratio : ", op_fusion_ratio)  
 
-  if(line_num > 2):
-    threeInsn_indexed_effictive_load_cnt += threeInsn_indexed_effictive_load(list_lines, line_num)
+if __name__ == '__main__':
+  main()
 
-macro_opFusion_num = indexed_load_cnt + indexed_effictive_load_cnt + clear_upper_word_cnt + load_upper_imm_addi_cnt + load_upper_imm_ld_cnt + load_global_imm_cnt + threeInsn_indexed_effictive_load_cnt + load_pair_cnt
 
-op_fusion_ratio = macro_opFusion_num / line_num
-print("Potential macro opFusion ", macro_opFusion_num)  
-print("macro opFusion ratio : ", op_fusion_ratio)  
