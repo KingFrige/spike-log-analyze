@@ -20,7 +20,7 @@ def print_lines_list(line_num, lines, annot_str, three_line = False):
     print(line_num-2, ' '.join(lines[2]))
   print(line_num-1,   ' '.join(lines[1]))
   print(line_num,     ' '.join(lines[0]))
-  print('------- %s --------------', annot_str)
+  print("------- %s --------------"%(annot_str))
   print()
 
 def indexed_load(lines, line_num):
