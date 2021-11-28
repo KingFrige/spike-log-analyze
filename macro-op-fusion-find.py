@@ -103,16 +103,43 @@ def load_global_imm(lines, line_num):
   return find_flag
 
 def calc_target_addr(lines, line_num):
-  pass
+  find_flag = 0
+  line1_list = lines[1]
+  line0_list = lines[0]
+  if(len(line0_list) > 6 and len(line1_list) > 6):
+    rd_match = line0_list[5] in line0_list[6]
+    insn_match = line1_list[4] == 'auipc' and line0_list[4] == 'jalr'
+    if(rd_match and insn_match):
+      find_flag = 1
+      print_lines_list(line_num, lines, "Fused far jump and link with calculated target address")
+  return find_flag
   
 def signle32_zero_ext(lines, line_num):
   pass
 
 def wide_mul(lines, line_num):
-  pass
+  find_flag = 0
+  line1_list = lines[1]
+  line0_list = lines[0]
+  if(len(line0_list) > 7 and len(line1_list) > 7):
+    rd_match = (line1_list[6] == line0_list[6]) and (line1_list[7] == line0_list[7])
+    insn_match = 'mulh' in line1_list[4] and line0_list[4] == 'mul'
+    if(rd_match and insn_match):
+      find_flag = 1
+      print_lines_list(line_num, lines, "wide multiply")
+  return find_flag
 
 def wide_div(lines, line_num):
-  pass
+  find_flag = 0
+  line1_list = lines[1]
+  line0_list = lines[0]
+  if(len(line0_list) > 7 and len(line1_list) > 7):
+    rd_match = (line1_list[6] == line0_list[6]) and (line1_list[7] == line0_list[7])
+    insn_match = 'div' in line1_list[4] and 'rem' in line0_list[4]
+    if(rd_match and insn_match):
+      find_flag = 1
+      print_lines_list(line_num, lines, "wide divide & remainder")
+  return find_flag
 
 def load_pair(lines, line_num):
   find_flag = 0
@@ -130,7 +157,20 @@ def load_pair(lines, line_num):
   return find_flag
 
 def post_indexed_load(lines, line_num):
-  pass
+  find_flag = 0
+  line1_list = lines[1]
+  line0_list = lines[0]
+  if(len(line0_list) > 7 and len(line1_list) > 6):
+    pattern = r'[(](.*?)[)]'
+    line1_rs = re.findall(pattern, line1_list[6])
+    line0_rd = line0_list[6]
+    line0_rs = line0_list[7]
+    rs_match = len(line1_rs) and line1_rs[0] == line0_rs and line0_rs == line0_rd
+    insn_match = line1_list[4] == 'ld' and line0_list[4] == 'add'
+    if(rs_match and insn_match):
+      find_flag = 1
+      print_lines_list(line_num, lines, "post indexed load")
+  return find_flag
 
 
 
@@ -147,8 +187,12 @@ def main():
   load_upper_imm_addi_cnt = 0
   load_upper_imm_ld_cnt = 0
   load_global_imm_cnt = 0
+  calc_target_addr_cnt = 0
   threeInsn_indexed_effictive_load_cnt = 0
+  wide_mul_cnt = 0
+  wide_div_cnt = 0
   load_pair_cnt = 0
+  post_indexed_load_cnt = 0
   
   for line in spike_log:
     line_list = re.sub(r',','',line).split();
@@ -164,12 +208,16 @@ def main():
       load_upper_imm_addi_cnt += load_upper_imm_addi(lines_list, line_num)
       load_upper_imm_ld_cnt += load_upper_imm_ld(lines_list, line_num)
       load_global_imm_cnt += load_global_imm(lines_list, line_num)
+      calc_target_addr_cnt += calc_target_addr(lines_list, line_num)
+      wide_mul_cnt += wide_mul(lines_list, line_num)
+      wide_div_cnt += wide_div(lines_list, line_num)
       load_pair_cnt += load_pair(lines_list, line_num)
+      post_indexed_load_cnt += post_indexed_load(lines_list, line_num)
   
     if(line_num > 2):
       threeInsn_indexed_effictive_load_cnt += threeInsn_indexed_effictive_load(lines_list, line_num)
   
-  macro_opFusion_num = indexed_load_cnt + indexed_effictive_load_cnt + clear_upper_word_cnt + load_upper_imm_addi_cnt + load_upper_imm_ld_cnt + load_global_imm_cnt + threeInsn_indexed_effictive_load_cnt + load_pair_cnt
+  macro_opFusion_num = indexed_load_cnt + indexed_effictive_load_cnt + clear_upper_word_cnt + load_upper_imm_addi_cnt + load_upper_imm_ld_cnt + load_global_imm_cnt + calc_target_addr_cnt + threeInsn_indexed_effictive_load_cnt + wide_mul_cnt + wide_div_cnt + load_pair_cnt + post_indexed_load_cnt
   
   op_fusion_ratio = macro_opFusion_num / line_num
   print("Potential macro opFusion ", macro_opFusion_num)  
