@@ -132,14 +132,18 @@ def load_pair(lines, line_num):
   find_flag = 0
   line1_list = re.sub(r',','',lines[1]).split();
   line0_list = re.sub(r',','',lines[0]).split();
-  rs_match = (line1_list[5] == line0_list[5]) and (line0_list[5] in line0_list[6:-1])
-  insn_match = line1_list[4] == 'ld' and line0_list[4] == 'ld'
-  if(rd_match and insn_match):
-    find_flag = 1
-    print(line_num-1, lines[1], end='')
-    print(line_num, lines[0], end='')
-    print('------- load pair --------------')
-    print()
+  if(len(line0_list) > 6 and len(line1_list) > 6):
+    pattern = r'[(](.*?)[)]'
+    line1_rs = re.findall(pattern, line1_list[6])
+    line0_rs = re.findall(pattern, line0_list[6])
+    rs_match = len(line1_rs) and len(line0_rs) and line1_rs[0] == line0_rs[0]
+    insn_match = line1_list[4] == 'ld' and line0_list[4] == 'ld'
+    if(rs_match and insn_match):
+      find_flag = 1
+      print(line_num-1, lines[1], end='')
+      print(line_num, lines[0], end='')
+      print('------- load pair --------------')
+      print()
   return find_flag
 
 def post_indexed_load(lines, line_num):
@@ -158,6 +162,7 @@ load_upper_imm_addi_cnt = 0
 load_upper_imm_ld_cnt = 0
 load_global_imm_cnt = 0
 threeInsn_indexed_effictive_load_cnt = 0
+load_pair_cnt = 0
 
 for line in spike_log:
   line_list = re.sub(r',','',line).split();
@@ -173,11 +178,12 @@ for line in spike_log:
     load_upper_imm_addi_cnt += load_upper_imm_addi(list_lines, line_num)
     load_upper_imm_ld_cnt += load_upper_imm_ld(list_lines, line_num)
     load_global_imm_cnt += load_global_imm(list_lines, line_num)
+    load_pair_cnt += load_pair(list_lines, line_num)
 
   if(line_num > 2):
     threeInsn_indexed_effictive_load_cnt += threeInsn_indexed_effictive_load(list_lines, line_num)
 
-macro_opFusion_num = indexed_load_cnt + indexed_effictive_load_cnt + clear_upper_word_cnt + load_upper_imm_addi_cnt + load_upper_imm_ld_cnt + load_global_imm_cnt + threeInsn_indexed_effictive_load_cnt
+macro_opFusion_num = indexed_load_cnt + indexed_effictive_load_cnt + clear_upper_word_cnt + load_upper_imm_addi_cnt + load_upper_imm_ld_cnt + load_global_imm_cnt + threeInsn_indexed_effictive_load_cnt + load_pair_cnt
 
 op_fusion_ratio = macro_opFusion_num / line_num
 print("Potential macro opFusion ", macro_opFusion_num)  
