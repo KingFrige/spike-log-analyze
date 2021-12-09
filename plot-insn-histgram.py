@@ -21,6 +21,10 @@ for line in spike_log:
     key = line_list[4]
     insn_dct[key] = insn_dct.get(key, 0) + 1
 
+insn_sum = sum(insn_dct.values())
+for key in insn_dct:
+  insn_dct[key] = insn_dct[key] * 100 / insn_sum
+
 insn_sorted = sorted(insn_dct.items(), key = lambda kv: kv[1], reverse=True)
 
 x1 = [x[0] for x in insn_sorted]
@@ -56,12 +60,9 @@ for i in ax.patches:
     fontsize=10, fontweight='bold', 
     color='grey') 
 
-ax.set_title('pc histgram', 
-  loc='left', ) 
-
 fig.text(0.9, 0.15, 'test', fontsize=12, 
   color='grey', ha='right', va='bottom', 
   alpha=0.7) 
 
-plt.title('insn histogram')
+plt.title('insn histogram / %')
 plt.savefig('output/'+file_name+'-insn-histogram.png', dpi=300)

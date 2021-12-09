@@ -50,7 +50,7 @@ $ gio open output/test-pc-histgram.png
 $ display output/test-pc-histgram.png
 ```
 
-pc histgram
+insn histgram
 ---------------
 
 ```
